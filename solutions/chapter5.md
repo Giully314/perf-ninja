@@ -15,9 +15,12 @@ if every pipeline slots is utilized, check stalls from frontend or backend,
 vectorization of the code (analyze assembly), check number of cache misses
 and branch miss prediction.  
 First run a benchmark for each algorithm and collect the metrics.   
-We can start to look at the IPC, number of cache miss and branch predictions.  
+We can start to look at the IPC, number of cache miss and branch predictions,
+latency and throughput.    
 After this stage, based on the results (maybe low IPC, maybe memory bound) we can
 start profile the code at a lower level.  
+
+
 
 
 
