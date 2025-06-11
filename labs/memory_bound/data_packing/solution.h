@@ -6,12 +6,16 @@ constexpr int minRandom = 0;
 constexpr int maxRandom = 100;
 
 // FIXME: this data structure can be reduced in size
+// Solution(Giully): Change the order from the greater (in size) to the
+// smallest. This reduce the padding and so the size of the structure.
+// Also we can change the types, assuming the above constants, so it requires
+// less space -> more data in cacheline -> less access to ram -> more speed.
 struct S {
-  int i;
-  long long l;
-  short s;
-  double d;
-  bool b;
+  float d;
+  short l;
+  short i : 8;
+  short s : 7;
+  bool b : 1;
 
   bool operator<(const S &s) const { return this->i < s.i; }
 };
