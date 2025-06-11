@@ -1,0 +1,9 @@
+cmake -DCMAKE_BUILD_TYPE=Debug -S .. -B debug -DCMAKE_C_FLAGS="-g" -DCMAKE_CXX_FLAGS="-g" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+cmake --build debug --config Debug --parallel 8
+cmake --build debug --target validateLab
+cmake --build debug --target benchmarkLab
+
+cmake -DCMAKE_BUILD_TYPE=Release -S .. -B release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+cmake --build release --config Release --parallel 8
+cmake --build release --target validateLab
+cmake --build release --target benchmarkLab
