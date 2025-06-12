@@ -1,5 +1,8 @@
 # https://cmake.org/documentation/
 
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 # Check usage of 'build' subdirectory
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
   message("CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}")
