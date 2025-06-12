@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <print>
 
 #if defined(__linux__) || defined(__linux) || defined(linux) ||                \
     defined(__gnu_linux__)
@@ -15,6 +16,8 @@
 // HINT: allocate huge pages using mmap/munmap
 // NOTE: See HugePagesSetupTips.md for how to enable huge pages in the OS
 #include <sys/mman.h>
+#include <errno.h>
+#include <string.h>
 
 #elif defined(ON_WINDOWS)
 
@@ -152,19 +155,36 @@ inline bool setRequiredPrivileges() {
 // Allocate an array of doubles of size `size`, return it as a
 // std::unique_ptr<double[], D>, where `D` is a custom deleter type
 inline auto allocateDoublesArray(size_t size) {
-  // Allocate memory
-  double *alloc = new double[size];
-  // remember to cast the pointer to double* if your allocator returns void*
+  // Allocate huge pages to avoid TLB misses.
+  
+  const size_t real_size = size * sizeof(double);
+  const size_t page_size = 1ul << 21; // 2MB
+  const size_t num_pages = real_size / page_size + (real_size % page_size != 0);
+  const size_t total_size = page_size * num_pages;
 
-  // Deleters can be conveniently defined as lambdas, but you can explicitly
-  // define a class if you're not comfortable with the syntax
-  auto deleter = [/* state = ... */](double *ptr) { delete[] ptr; };
+  void *ptr = mmap(nullptr, total_size, 
+      PROT_READ | PROT_WRITE, 
+      MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, 
+      -1, 0);
 
+  std::println("num_pages {}", num_pages);
+  std::println("page size {}", page_size);
+
+  if (ptr == MAP_FAILED) {
+    std::println("failed map {}", strerror(errno));
+    throw std::bad_alloc{};
+  }
+  madvise(ptr, total_size, MADV_HUGEPAGE);
+  
+  double *alloc = reinterpret_cast<double*>(ptr);  
+  auto deleter = [total_size](double *ptr) { munmap(ptr, total_size); };
+  
   return std::unique_ptr<double[], decltype(deleter)>(alloc,
                                                       std::move(deleter));
-
-  // The above is equivalent to:
-  // return std::make_unique<double[]>(size);
-  // The more verbose version is meant to demonstrate the use of a custom
-  // (potentially stateful) deleter
+  
+  
+  // Original code.
+  // double *alloc = new double[size];
+  // auto deleter = [](double *ptr) { delete[] ptr; };
+ 
 }
