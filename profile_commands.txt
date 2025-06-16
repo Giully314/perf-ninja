@@ -1,2 +1,7 @@
 perf stat -- program
 pmu-tools/toplev.py --core S0-C0 -l2 -v --no-desc taskset -c 0
+
+perf record 
+perf report -n -M intel
+
+--benchmark_out_format=json --benchmark_out=filename.json
