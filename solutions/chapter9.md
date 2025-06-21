@@ -9,3 +9,8 @@ allow to perform other optimization in the code itself. Also the C++ library is 
 ## Loop blocking
 Higher utilization of first level cache improves performance. With the loop tiling approach, we divide the main computation in smaller blocks to fit in L1 cache.  From my analysis the optimal block size is 16.  
 We can also use a cache oblivious algorithm as described [here](https://en.wikipedia.org/wiki/Cache-oblivious_algorithm#Examples).  
+
+
+## Loop interchange 1
+Sequantial memory access by swapping nested loops allows to use the whole cache and 
+to prefetch data from RAM more easily.  
