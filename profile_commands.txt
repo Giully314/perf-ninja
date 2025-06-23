@@ -1,5 +1,6 @@
 perf stat -- program
 pmu-tools/toplev.py --core S0-C0 -l2 -v --no-desc taskset -c 0
+pmu-tools/toplev.py --core S0-C0 -l2 -v --no-desc --run-sample taskset -c 0
 
 perf stat --topdown -a taskset -c 0 
 
