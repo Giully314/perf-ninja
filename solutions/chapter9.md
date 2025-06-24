@@ -27,6 +27,10 @@ While traversing the second list, we can check multiple values at the same time 
 we can use more the ILP of the cpu. Another approach would be to change the algorithm
 and load the data into an hashmap for fast comparison.
 
+## Dependency chain 2
+Same concept applied in the first exercise of this type; remove the chain inside the 
+rng and try to do a manual loop unrool inside the particle computation so we can
+process multiple entities per loop iteration (inside the OOO engine).
 
 
 # Exercise 2
