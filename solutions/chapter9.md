@@ -22,6 +22,11 @@ into the upper loop and make it an array. Then we can apply the init, accumulate
 steps by dividing them into independent loop. We can repeat these step for more nested 
 loop and finally we can switch the order of the loops.
 
+## Dependency chain 1
+While traversing the second list, we can check multiple values at the same time so 
+we can use more the ILP of the cpu. Another approach would be to change the algorithm
+and load the data into an hashmap for fast comparison.
+
 
 
 # Exercise 2

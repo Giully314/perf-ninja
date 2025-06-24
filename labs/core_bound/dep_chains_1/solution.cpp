@@ -1,6 +1,7 @@
 #include "solution.hpp"
 #include <array>
 #include <iostream>
+#include <print>
 
 unsigned getSumOfDigits(unsigned n) {
   unsigned sum = 0;
@@ -22,20 +23,36 @@ unsigned getSumOfDigits(unsigned n) {
 //       Think how you can execute multiple dependency chains in parallel.
 unsigned solution(List *l1, List *l2) {
   unsigned retVal = 0;
-
+  constexpr auto size = 4;
+  unsigned vals[size] = {0};
   List *head2 = l2;
   // O(N^2) algorithm:
   while (l1) {
-    unsigned v = l1->value;
+    // std::println("loading values");
+    for (int i = 0; i < size; ++i) {
+      if (l1) {
+        vals[i] = l1->value;
+      } else {
+        break;
+      }
+      l1 = l1->next;
+    }
+
+    // std::println("checking values");
     l2 = head2;
     while (l2) {
-      if (l2->value == v) {
-        retVal += getSumOfDigits(v);
+      for (int i = 0; i < size; ++i) {
+        if (l2->value == vals[i]) {
+          retVal += getSumOfDigits(l2->value);
+          vals[i] = 0;
+        }
+      }
+      
+      if (vals[0] == 0 && vals[1] == 0 && vals[2] == 0 && vals[3] == 0) {
         break;
       }
       l2 = l2->next;
     }
-    l1 = l1->next;
   }
 
   return retVal;
