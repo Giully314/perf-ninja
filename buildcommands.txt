@@ -7,3 +7,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -S .. -B release -DCMAKE_POLICY_VERSION_MINIMUM
 cmake --build release --config Release --parallel 8
 cmake --build release --target validateLab
 cmake --build release --target benchmarkLab
+
+
+Build with check for vectorization
+clang++ -c solution.cpp -O3 -Rpass-analysis=loop-vectorize
