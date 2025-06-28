@@ -1,5 +1,5 @@
 #include "solution.h"
-
+#include <algorithm>
 #include <random>
 
 void generateObjects(InstanceArray& array) {
@@ -20,6 +20,14 @@ void generateObjects(InstanceArray& array) {
 
 // Invoke the `handle` method on all instances in `output`
 void invoke(InstanceArray& array, std::size_t& data) {
+    // sorting based on type is slower.
+    // std::sort(array.begin(), array.end(), [](const auto &a, const auto&b) {
+    //     return a->info < b->info;
+    // });
+
+    // One solution would be to use a "static dispatch" (a switch) instead
+    // of relying on virtual calls.
+
     for (const auto& item: array) {
         item->handle(data);
     }
